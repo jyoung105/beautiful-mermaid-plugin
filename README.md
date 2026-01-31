@@ -108,7 +108,7 @@ All commands are namespaced as `beautiful-mermaid-plugin:<command>`.
 | Command | Description |
 |--------|--------------|
 | `/beautiful-mermaid-plugin:draw-diagram-overview` | Analyze the **full codebase** and draw a Mermaid diagram. Default output is **SVG**; add `--ascii` for terminal/ASCII output. |
-| `/beautiful-mermaid-plugin:draw-diagram-part` | Analyze **specific files or directories** and draw a Mermaid diagram. Default output is **SVG**; add `--ascii` for terminal/ASCII output. |
+| `/beautiful-mermaid-plugin:draw-diagram-part` | Analyze **specific files or directories** and draw a Mermaid diagram. Prompts for paths if none provided. Default output is **SVG**; add `--ascii` for terminal/ASCII output. |
 | `/beautiful-mermaid-plugin:install-mermaid` | Check and install beautiful-mermaid and a TypeScript runner (e.g. tsx) in the project. |
 | `/beautiful-mermaid-plugin:format-filename` | Generate a descriptive filename for diagram output (e.g. `auth-flow-sequence.svg` or `diagram-flowchart.txt`). |
 

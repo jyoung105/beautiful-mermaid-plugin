@@ -12,8 +12,7 @@ Analyze specific files or directories and generate a Mermaid diagram using beaut
    - **Required** file paths or directories to analyze (at least one)
    - Optional diagram type (flowchart, sequence, class, state, er)
    - Optional `--ascii` flag for terminal-friendly output (default is SVG)
-   - **Reject empty paths**: If no file or directory path is provided in `$ARGUMENTS` (only flags or diagram types, or nothing at all), stop and respond:
-     > "This command requires specific file or directory paths. To diagram the full codebase, use `/beautiful-mermaid-plugin:draw-diagram-overview`."
+   - **Ask for paths if missing**: If no file or directory path is provided in `$ARGUMENTS` (only flags or diagram types, or nothing at all), ask the user which files or directories they want to analyze before proceeding. Mention that `/beautiful-mermaid-plugin:draw-diagram-overview` is available for full codebase diagrams.
 
 2. **Analyze code**: Read the specified files or explore the given directories to understand structure, data flow, or relationships within that scope. Use the code-analyzer agent if helpful. Focus the analysis on the provided paths only.
 
