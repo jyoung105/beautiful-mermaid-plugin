@@ -4,7 +4,7 @@ description: Generate a descriptive filename for diagram output (SVG or ASCII).
 
 # Format Filename
 
-Generate a clear, consistent filename for saving a diagram produced by the mermaid-plugin.
+Generate a clear, consistent filename for saving a diagram produced by the beautiful-mermaid-plugin.
 
 ## Behavior
 

@@ -54,45 +54,45 @@ You can also use the plugin’s **install** command so Claude Code can install t
 From your project root (or any directory where you want to use the plugin):
 
 ```bash
-claude --plugin-dir /path/to/mermaid-skill
+claude --plugin-dir /path/to/beautiful-mermaid-plugin
 ```
 
-Example if `mermaid-skill` is next to your project:
+Example if `beautiful-mermaid-plugin` is next to your project:
 
 ```bash
-claude --plugin-dir ./mermaid-skill
+claude --plugin-dir ./beautiful-mermaid-plugin
 ```
 
 ### Option 2: Install from a marketplace or repo
 
 If this plugin is published to a Claude Code plugin marketplace or as a repo, follow the instructions there (e.g. `claude plugin install …` or equivalent). See [Discover and install plugins](https://code.claude.com/docs/en/discover-plugins) for how Claude Code discovers and installs plugins.
 
-After installation, restart Claude Code if needed. Run `/help` to see commands under the `mermaid-plugin` namespace.
+After installation, restart Claude Code if needed. Run `/help` to see commands under the `beautiful-mermaid-plugin` namespace.
 
 ---
 
 ## Using commands
 
-All commands are namespaced as `mermaid-plugin:<command>`.
+All commands are namespaced as `beautiful-mermaid-plugin:<command>`.
 
 | Command | Description |
 |--------|--------------|
-| `/mermaid-plugin:draw-diagram` | Analyze codebase or files and draw a Mermaid diagram. Default output is **SVG**; add `--ascii` in arguments for terminal/ASCII output. |
-| `/mermaid-plugin:install-mermaid` | Check and install beautiful-mermaid and a TypeScript runner (e.g. tsx) in the project. |
-| `/mermaid-plugin:format-filename` | Generate a descriptive filename for diagram output (e.g. `auth-flow-sequence.svg` or `diagram-flowchart.txt`). |
+| `/beautiful-mermaid-plugin:draw-diagram` | Analyze codebase or files and draw a Mermaid diagram. Default output is **SVG**; add `--ascii` in arguments for terminal/ASCII output. |
+| `/beautiful-mermaid-plugin:install-mermaid` | Check and install beautiful-mermaid and a TypeScript runner (e.g. tsx) in the project. |
+| `/beautiful-mermaid-plugin:format-filename` | Generate a descriptive filename for diagram output (e.g. `auth-flow-sequence.svg` or `diagram-flowchart.txt`). |
 
 ### Examples
 
 - Draw a diagram (SVG by default):  
-  `/mermaid-plugin:draw-diagram`
+  `/beautiful-mermaid-plugin:draw-diagram`
 - Draw and output ASCII:  
-  `/mermaid-plugin:draw-diagram --ascii`
+  `/beautiful-mermaid-plugin:draw-diagram --ascii`
 - Draw from specific path/diagram type:  
-  `/mermaid-plugin:draw-diagram src/auth flowchart`
+  `/beautiful-mermaid-plugin:draw-diagram src/auth flowchart`
 - Install prerequisites:  
-  `/mermaid-plugin:install-mermaid`
+  `/beautiful-mermaid-plugin:install-mermaid`
 - Get a suggested filename:  
-  `/mermaid-plugin:format-filename api sequence svg`
+  `/beautiful-mermaid-plugin:format-filename api sequence svg`
 
 ---
 
@@ -156,7 +156,7 @@ Full list and details: `skills/draw-beautiful-mermaid/references/THEMES.md`.
 ## Plugin layout
 
 ```
-mermaid-skill/
+beautiful-mermaid-plugin/
 ├── .claude-plugin/
 │   └── plugin.json
 ├── commands/
@@ -188,4 +188,4 @@ This plugin uses **[beautiful-mermaid](https://github.com/lukilabs/beautiful-mer
 
 The ASCII rendering in beautiful-mermaid is based on [mermaid-ascii](https://github.com/AlexanderGrooff/mermaid-ascii) by Alexander Grooff (ported from Go to TypeScript and extended).
 
-**mermaid-plugin** is not affiliated with lukilabs or the beautiful-mermaid project; it is a separate Claude Code plugin that integrates beautiful-mermaid for use inside Claude Code.
+**beautiful-mermaid-plugin** is not affiliated with lukilabs or the beautiful-mermaid project; it is a separate Claude Code plugin that integrates beautiful-mermaid for use inside Claude Code.

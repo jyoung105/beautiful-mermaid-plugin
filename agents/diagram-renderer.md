@@ -20,6 +20,6 @@ When invoked:
 
 4. **Theme**: Use `--theme` for SVG (e.g. `tokyo-night`, `zinc-dark`). See the draw-beautiful-mermaid skill or `references/THEMES.md` for built-in themes.
 
-5. **Prerequisites**: If beautiful-mermaid or tsx is missing, tell the user to run `/mermaid-plugin:install-mermaid` or install them in the project.
+5. **Prerequisites**: If beautiful-mermaid or tsx is missing, tell the user to run `/beautiful-mermaid-plugin:install-mermaid` or install them in the project.
 
 Write the output file to the path the user requested (e.g. `docs/diagrams/` or project root) and confirm the path. On invalid Mermaid, report the error clearly.

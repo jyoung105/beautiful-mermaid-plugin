@@ -25,7 +25,7 @@ Analyze the codebase or the files specified in `$ARGUMENTS`, then generate and r
 
 ## Render script usage
 
-From the project root, with the plugin loaded from path `PLUGIN_PATH` (e.g. `./mermaid-skill` when using `--plugin-dir`):
+From the project root, with the plugin loaded from path `PLUGIN_PATH` (e.g. `./beautiful-mermaid-plugin` when using `--plugin-dir`):
 
 ```bash
 # SVG (default)
@@ -35,4 +35,4 @@ npx tsx PLUGIN_PATH/skills/draw-beautiful-mermaid/scripts/render.ts --input "<me
 npx tsx PLUGIN_PATH/skills/draw-beautiful-mermaid/scripts/render.ts --input "<mermaid code or .mmd file>" --output diagram.txt --ascii
 ```
 
-Ensure `beautiful-mermaid` is installed in the project (use `/mermaid-plugin:install-mermaid` if needed).
+Ensure `beautiful-mermaid` is installed in the project (use `/beautiful-mermaid-plugin:install-mermaid` if needed).

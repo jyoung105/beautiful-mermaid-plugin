@@ -1,5 +1,5 @@
 ---
-description: Install beautiful-mermaid and verify prerequisites for the mermaid-plugin.
+description: Install beautiful-mermaid and verify prerequisites for the beautiful-mermaid-plugin.
 ---
 
 # Install Mermaid Prerequisites
