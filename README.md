@@ -133,7 +133,9 @@ All commands are namespaced as `beautiful-mermaid-plugin:<command>`.
 
 ## Deep code analysis
 
-Both diagram commands perform **deep code analysis** by default, going beyond surface-level architecture to trace actual logic and behavior:
+Both diagram commands perform **deep code analysis** by default, going beyond surface-level architecture to trace actual logic and behavior.
+
+When analyzing directories or full codebases, files are **partitioned by module/domain** and analyzed in **parallel** using multiple code-analyzer agents for faster results. Dependency directories (`node_modules/`, `dist/`, `.git/`, etc.) are automatically excluded.
 
 | Category | What is analyzed |
 |----------|-----------------|

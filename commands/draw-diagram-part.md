@@ -12,21 +12,61 @@ Analyze specific files or directories and generate a Mermaid diagram using beaut
    - **Required** file paths or directories to analyze (at least one)
    - Optional diagram type (flowchart, sequence, class, state, er)
    - Optional `--ascii` flag for terminal-friendly output (default is SVG)
-   - **Ask for paths if missing**: If no file or directory path is provided in `$ARGUMENTS` (only flags or diagram types, or nothing at all), ask the user which files or directories they want to analyze before proceeding. Mention that `/beautiful-mermaid-plugin:draw-diagram-overview` is available for full codebase diagrams.
 
-2. **Analyze code**: Read the specified files or explore the given directories using the code-analyzer agent to perform a **deep analysis**:
-   - Trace function call chains to at least 3 levels of depth
-   - Document every conditional branch (`if/else`, `switch/case`, guard clauses) with the actual condition expressions (e.g. `user.role === 'admin'`), not generic labels
-   - Map data transformation pipelines showing how inputs become outputs at each step
-   - Capture loop structures and what they iterate over, accumulate, or transform
-   - Document error handling paths (`try/catch`, `.catch()`, error propagation, fallback logic, retry patterns)
-   - Identify state transitions and status progressions
-   - Trace async flows (Promise chains, async/await sequences, concurrent operations)
-   - Note all side effects (I/O, network calls, database queries, cache operations)
-   - Capture business logic decision trees with their conditions
-   - Follow critical call chains **one level outside the provided scope** if needed to show how the code connects to the rest of the system
+   **Mandatory path validation** — BEFORE any analysis:
+   - Check that `$ARGUMENTS` contains at least one file or directory path
+   - If no path is found (only flags, diagram types, or nothing at all), **STOP immediately** — do NOT invoke the code-analyzer agent, do NOT glob or read any files
+   - Respond: "Please specify file or directory paths to analyze. Example: `/beautiful-mermaid-plugin:draw-diagram-part src/auth` or `/beautiful-mermaid-plugin:draw-diagram-part src/server.ts`. For full codebase analysis, use `/beautiful-mermaid-plugin:draw-diagram-overview`."
+   - Wait for the user to provide paths before continuing
 
-3. **Generate Mermaid**: Produce valid Mermaid diagram code (flowchart, sequenceDiagram, classDiagram, stateDiagram-v2, or erDiagram). Use newlines between statements and spaces around arrows (e.g. `A --> B`).
+2. **Analyze code**: Determine the analysis strategy based on scope size.
+
+   ### Single File
+   If only one file is provided, use a single code-analyzer agent for deep analysis.
+
+   ### Directory or Multiple Files — Parallel Analysis
+   If a directory is provided, or multiple files are specified:
+
+   **Step 2a — Discover files:**
+   - Use Glob to find all code files in the provided path(s)
+   - Apply the same exclusion patterns defined in the code-analyzer agent: dependency directories (`node_modules/`, `vendor/`, `venv/`, `__pycache__/`, `.pytest_cache/`), build output (`dist/`, `build/`, `.next/`, `.nuxt/`, `out/`, `.output/`), VCS and caches (`.git/`, `.svn/`, `.hg/`, `.turbo/`, `.parcel-cache/`, `.cache/`), coverage (`coverage/`, `.nyc_output/`), binary/non-code files (images, fonts, PDFs), lock files, generated code (`.d.ts`, `.map`)
+   - Count total files found
+
+   **Step 2b — Partition:**
+   - Group files by subdirectory or logical domain (e.g., controllers together, models together)
+   - Choose agent count based on file count:
+     - **1–5 files**: 1 code-analyzer agent
+     - **6–30 files**: 2–3 code-analyzer agents
+     - **31–100 files**: 4–6 code-analyzer agents
+     - **100+ files**: Warn the user about scope size, then use 6–10 code-analyzer agents
+
+   **Step 2c — Launch parallel code-analyzer agents:**
+   - Create one Task (code-analyzer agent) per partition
+   - Launch ALL Tasks in a **single message** with multiple Task tool calls (this runs them in parallel)
+   - Each agent receives its specific file list and performs deep analysis:
+     - Trace function call chains to at least 3 levels of depth
+     - Document every conditional branch with actual condition expressions
+     - Map data transformation pipelines
+     - Capture loop structures and state transitions
+     - Document error handling paths
+     - Trace async flows and side effects
+     - Capture business logic decision trees
+     - Follow critical call chains **one level outside scope** to show system connections
+
+   **Step 2d — Merge results:**
+   - Collect the structured analysis from each parallel agent
+   - Identify cross-partition dependencies (functions in partition A calling functions in partition B)
+   - Create a unified analysis preserving all logic details from each partition
+
+   ### Analysis Quality Requirements (All Strategies)
+   Regardless of whether one or many agents are used, maintain deep analysis quality:
+   - Every conditional branch with actual condition expressions (not generic labels)
+   - Data transformation pipelines traced step-by-step
+   - Error paths alongside happy paths
+   - Loop structures, state transitions, and async flows captured
+   - Business logic decision trees fully documented
+
+3. **Generate Mermaid**: Using the analysis (merged from parallel agents if applicable), produce valid Mermaid diagram code (flowchart, sequenceDiagram, classDiagram, stateDiagram-v2, or erDiagram). Use newlines between statements and spaces around arrows (e.g. `A --> B`).
    - Use descriptive node labels that explain what each step does (not just function names)
    - Include actual condition expressions on decision branches (e.g. `-- user.role === 'admin' -->`), not generic labels like "check condition"
    - Use subgraph groupings for logical sections (e.g. `subgraph Error Handling`)

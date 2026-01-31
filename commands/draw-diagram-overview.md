@@ -14,20 +14,59 @@ Analyze the full codebase and generate a Mermaid diagram using beautiful-mermaid
    - **Reject file/directory paths**: If any argument looks like a file path or directory (contains `/`, `.ts`, `.js`, `.py`, or other file extensions, or matches a known directory in the project), stop and respond:
      > "This command analyzes the full codebase. To diagram specific files or directories, use `/beautiful-mermaid-plugin:draw-diagram-part <paths>`."
 
-2. **Analyze code**: Explore the full codebase to understand its architecture, logic flow, data transformations, and behavior. Use the code-analyzer agent to perform a **deep analysis**:
-   - Identify entry points, core business logic modules, and API handlers as primary targets
-   - Trace function call chains to at least 3 levels of depth with inputs, outputs, and branching conditions
-   - Document every conditional branch (`if/else`, `switch/case`, guard clauses) with actual condition expressions
-   - Map data transformation pipelines showing how inputs become outputs at each step
-   - Capture loop structures and what they iterate over, accumulate, or transform
-   - Document error handling paths (`try/catch`, `.catch()`, fallback logic, retry patterns)
-   - Identify state transitions and status progressions
-   - Trace async flows (Promise chains, async/await, concurrent operations)
-   - Note all side effects (I/O, network calls, database queries, cache operations)
-   - Capture business logic decision trees with their conditions
-   - For large codebases: prioritize the most critical and complex modules to keep the diagram readable, but still trace their internal logic rather than just showing boxes
+2. **Analyze code**: Use parallel analysis to explore the full codebase efficiently.
 
-3. **Generate Mermaid**: Produce valid Mermaid diagram code (flowchart, sequenceDiagram, classDiagram, stateDiagram-v2, or erDiagram). Use newlines between statements and spaces around arrows (e.g. `A --> B`).
+   **Step 2a — Discover project structure:**
+   - Use Glob to find all code files in the project
+   - Apply the same exclusion patterns defined in the code-analyzer agent: dependency directories (`node_modules/`, `vendor/`, `venv/`, `__pycache__/`, `.pytest_cache/`), build output (`dist/`, `build/`, `.next/`, `.nuxt/`, `out/`, `.output/`), VCS and caches (`.git/`, `.svn/`, `.hg/`, `.turbo/`, `.parcel-cache/`, `.cache/`), coverage (`coverage/`, `.nyc_output/`), binary/non-code files (images, fonts, PDFs), lock files, generated code (`.d.ts`, `.map`)
+   - Identify primary modules, packages, or feature directories
+   - Count total files
+
+   **Step 2b — Partition by module/domain:**
+   - Group files by top-level directory, package, or domain (e.g., `src/auth/`, `src/api/`, `src/database/`)
+   - Choose partition count based on total file count:
+     - **1–15 files**: 2–3 partitions
+     - **16–60 files**: 3–5 partitions
+     - **61–150 files**: 5–8 partitions
+     - **150+ files**: 8–10 partitions (warn user about scope size)
+   - For very large codebases (200+ files), focus partitions on:
+     1. Entry points (`main`, `index`, `server`, `app`)
+     2. Core business logic modules
+     3. API handlers and routes
+     4. Data models and database layer
+     5. Critical utility modules
+   - Each partition should be a cohesive module or domain
+
+   **Step 2c — Launch parallel code-analyzer agents:**
+   - Create one Task (code-analyzer agent) per partition
+   - Launch ALL Tasks in a **single message** with multiple Task tool calls (this runs them in parallel)
+   - Each agent analyzes its assigned module/domain with deep analysis:
+     - Identify entry points and core business logic within the module
+     - Trace function call chains to at least 3 levels of depth
+     - Document every conditional branch with actual condition expressions
+     - Map data transformation pipelines
+     - Capture loop structures and state transitions
+     - Document error handling paths
+     - Trace async flows and side effects
+     - Capture business logic decision trees
+     - Note inter-module dependencies (calls to code outside this partition)
+
+   **Step 2d — Merge analysis results:**
+   - Collect the structured analysis from each parallel agent
+   - Identify cross-module interactions and dependencies
+   - Create a unified analysis showing:
+     - High-level module structure and relationships
+     - Entry points and main flow paths
+     - Critical business logic with detailed internal flows
+     - Data flow across module boundaries
+     - Error handling strategies
+
+   **Step 2e — Prioritize for diagram readability:**
+   - For large codebases, focus the final diagram on system architecture and critical detailed flows
+   - Still include internal logic detail for selected critical paths (not just boxes)
+   - Trace the most complex and important modules in full detail
+
+3. **Generate Mermaid**: Using the unified analysis (merged from parallel agents), produce valid Mermaid diagram code (flowchart, sequenceDiagram, classDiagram, stateDiagram-v2, or erDiagram). Use newlines between statements and spaces around arrows (e.g. `A --> B`).
    - Use descriptive node labels that explain what each step does (not just function names)
    - Include actual condition expressions on decision branches (e.g. `-- user.role === 'admin' -->`)
    - Use subgraph groupings to organize modules and logical sections
