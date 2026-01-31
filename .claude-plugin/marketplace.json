@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "beautiful-mermaid-marketplace",
+  "version": "1.0.0",
+  "owner": {
+    "name": "Tony Lee"
+  },
+  "metadata": {
+    "description": "Marketplace for the beautiful-mermaid-plugin, which renders Mermaid diagrams as SVG or ASCII with 15 built-in themes."
+  },
+  "plugins": [
+    {
+      "name": "beautiful-mermaid-plugin",
+      "description": "Render beautiful Mermaid diagrams (SVG/ASCII) using the beautiful-mermaid library. Includes commands for code analysis, diagram generation, and theme customization.",
+      "version": "1.0.0",
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}

@@ -49,25 +49,55 @@ You can also use the plugin’s **install** command so Claude Code can install t
 
 ## Installing this plugin
 
-### Option 1: Load from a local directory (development)
+### Option 1: Install from the marketplace (recommended)
 
-From your project root (or any directory where you want to use the plugin):
+Add the marketplace and install the plugin:
+
+```shell
+/plugin marketplace add jyoung105/beautiful-mermaid-plugin
+/plugin install beautiful-mermaid-plugin@beautiful-mermaid-marketplace
+```
+
+Or install interactively — run `/plugin`, go to the **Discover** tab, and select **beautiful-mermaid-plugin**.
+
+### Option 2: Require it for your team
+
+Add the marketplace to your project's `.claude/settings.json` so team members are automatically prompted to install it when they trust the project folder:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "beautiful-mermaid-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "jyoung105/beautiful-mermaid-plugin"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "beautiful-mermaid-plugin@beautiful-mermaid-marketplace": true
+  }
+}
+```
+
+### Option 3: Load from a local directory (development)
+
+For local development or testing, load the plugin directly from a directory:
 
 ```bash
 claude --plugin-dir /path/to/beautiful-mermaid-plugin
 ```
 
-Example if `beautiful-mermaid-plugin` is next to your project:
+### Updating the plugin
 
-```bash
-claude --plugin-dir ./beautiful-mermaid-plugin
+To update to the latest version:
+
+```shell
+/plugin marketplace update beautiful-mermaid-marketplace
+/plugin update beautiful-mermaid-plugin
 ```
 
-### Option 2: Install from a marketplace or repo
-
-If this plugin is published to a Claude Code plugin marketplace or as a repo, follow the instructions there (e.g. `claude plugin install …` or equivalent). See [Discover and install plugins](https://code.claude.com/docs/en/discover-plugins) for how Claude Code discovers and installs plugins.
-
-After installation, restart Claude Code if needed. Run `/help` to see commands under the `beautiful-mermaid-plugin` namespace.
+After installation, restart Claude Code if needed. Run `/help` to see commands under the `beautiful-mermaid-plugin` namespace. See [Discover and install plugins](https://code.claude.com/docs/en/discover-plugins) and [Plugin marketplaces](https://code.claude.com/docs/en/plugin-marketplaces) for more details.
 
 ---
 
@@ -158,7 +188,9 @@ Full list and details: `skills/draw-beautiful-mermaid/references/THEMES.md`.
 ```
 beautiful-mermaid-plugin/
 ├── .claude-plugin/
-│   └── plugin.json
+│   ├── plugin.json
+│   └── marketplace.json
+├── LICENSE
 ├── commands/
 │   ├── draw-diagram.md
 │   ├── install-mermaid.md
