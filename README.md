@@ -4,8 +4,8 @@ A [Claude Code](https://code.claude.com/) plugin that renders beautiful Mermaid 
 
 ## What this plugin does
 
-- **Commands**: Install prerequisites, draw diagrams from code, and format output filenames.
-- **Agents**: Code analyzer (read and analyze code for diagrams) and diagram renderer (render Mermaid with beautiful-mermaid).
+- **Commands**: Install prerequisites, draw diagrams from code with deep analysis, and format output filenames.
+- **Agents**: Code analyzer (deep analysis of code logic, branching, data flow for diagrams) and diagram renderer (render Mermaid with beautiful-mermaid).
 - **Skill**: Draw beautiful Mermaid with SVG/ASCII, themes, and the built-in render script.
 
 Output format is **SVG by default**; use the **ASCII** option for terminal-friendly text output.
@@ -107,8 +107,8 @@ All commands are namespaced as `beautiful-mermaid-plugin:<command>`.
 
 | Command | Description |
 |--------|--------------|
-| `/beautiful-mermaid-plugin:draw-diagram-overview` | Analyze the **full codebase** and draw a Mermaid diagram. Default output is **SVG**; add `--ascii` for terminal/ASCII output. |
-| `/beautiful-mermaid-plugin:draw-diagram-part` | Analyze **specific files or directories** and draw a Mermaid diagram. Prompts for paths if none provided. Default output is **SVG**; add `--ascii` for terminal/ASCII output. |
+| `/beautiful-mermaid-plugin:draw-diagram-overview` | Analyze the **full codebase** with deep code analysis (logic flow, branching, data transformations) and draw a Mermaid diagram. Default output is **SVG**; add `--ascii` for terminal/ASCII output. |
+| `/beautiful-mermaid-plugin:draw-diagram-part` | Analyze **specific files or directories** with deep code analysis (logic flow, branching, data transformations) and draw a Mermaid diagram. Prompts for paths if none provided. Default output is **SVG**; add `--ascii` for terminal/ASCII output. |
 | `/beautiful-mermaid-plugin:install-mermaid` | Check and install beautiful-mermaid and a TypeScript runner (e.g. tsx) in the project. |
 | `/beautiful-mermaid-plugin:format-filename` | Generate a descriptive filename for diagram output (e.g. `auth-flow-sequence.svg` or `diagram-flowchart.txt`). |
 
@@ -131,13 +131,34 @@ All commands are namespaced as `beautiful-mermaid-plugin:<command>`.
 
 ---
 
+## Deep code analysis
+
+Both diagram commands perform **deep code analysis** by default, going beyond surface-level architecture to trace actual logic and behavior:
+
+| Category | What is analyzed |
+|----------|-----------------|
+| **Function internals** | Step-by-step logic within function bodies, from first line to return |
+| **Conditional branches** | Every `if/else`, `switch/case`, guard clause with actual condition expressions |
+| **Data pipelines** | How data transforms at each step (e.g. request -> validation -> domain -> DB -> response) |
+| **Error handling** | `try/catch`, `.catch()`, fallback logic, retry patterns, error propagation chains |
+| **Loop structures** | What is iterated, accumulated, or transformed |
+| **State transitions** | Status progressions, state machine patterns, store/context updates |
+| **Async flow** | Promise chains, async/await, concurrent operations, event patterns |
+| **Side effects** | I/O, network calls, DB queries, cache operations, logging |
+| **Business logic** | Decision trees, permission checks, validation cascades, feature flags |
+| **Call chains** | Function calls traced to 3+ levels of depth with inputs, outputs, and branching |
+
+Diagrams include descriptive labels with actual condition expressions on branches (e.g. `user.role === 'admin'`), subgraph groupings, and both happy-path and error-path flows.
+
+---
+
 ## Using agents (subagents)
 
 The plugin adds two agents, available in Claude Code’s agent list (e.g. via `/agents`):
 
 | Agent | Purpose |
 |-------|--------|
-| **code-analyzer** | Reads and analyzes code files or codebase to extract structure, data flows, and relationships for diagram generation (flowcharts, sequence, class, state, ER). |
+| **code-analyzer** | Performs deep analysis of code files or codebase — traces logic flow, conditional branches, data transformations, error handling, state transitions, and call chains for diagram generation (flowcharts, sequence, class, state, ER). |
 | **diagram-renderer** | Takes Mermaid source and renders it to SVG or ASCII using beautiful-mermaid and the plugin’s render script. |
 
 You can say things like:
