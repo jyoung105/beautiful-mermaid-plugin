@@ -1,0 +1,8 @@
+{
+  "name": "mermaid-plugin",
+  "description": "Render beautiful Mermaid diagrams (SVG/ASCII) using the beautiful-mermaid library. Includes commands for code analysis, diagram generation, and theme customization.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Tony Lee"
+  }
+}
