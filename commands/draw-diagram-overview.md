@@ -1,19 +1,20 @@
 ---
-description: Analyze codebase or files and draw a Mermaid diagram (SVG or ASCII). Default output is SVG; use --ascii for terminal.
+description: Analyze the full codebase and draw a Mermaid diagram (SVG or ASCII). Default output is SVG; use --ascii for terminal.
 ---
 
-# Draw Diagram
+# Draw Diagram Overview
 
-Analyze the codebase or the files specified in `$ARGUMENTS`, then generate and render a Mermaid diagram using beautiful-mermaid.
+Analyze the full codebase and generate a Mermaid diagram using beautiful-mermaid. This command scans the entire project -- do NOT pass specific file or directory paths.
 
 ## Behavior
 
 1. **Parse arguments**: From `$ARGUMENTS`, interpret:
-   - Optional file paths or directory to analyze
    - Optional diagram type (flowchart, sequence, class, state, er)
    - Optional `--ascii` flag for terminal-friendly output (default is SVG)
+   - **Reject file/directory paths**: If any argument looks like a file path or directory (contains `/`, `.ts`, `.js`, `.py`, or other file extensions, or matches a known directory in the project), stop and respond:
+     > "This command analyzes the full codebase. To diagram specific files or directories, use `/beautiful-mermaid-plugin:draw-diagram-part <paths>`."
 
-2. **Analyze code**: Read the relevant code files or explore the codebase to understand structure, data flow, or relationships. Use the code-analyzer agent if helpful.
+2. **Analyze code**: Explore the full codebase to understand its overall structure, data flow, module relationships, and architecture. Use the code-analyzer agent if helpful. Focus on high-level architecture rather than individual file internals.
 
 3. **Generate Mermaid**: Produce valid Mermaid diagram code (flowchart, sequenceDiagram, classDiagram, stateDiagram-v2, or erDiagram). Use newlines between statements and spaces around arrows (e.g. `A --> B`).
 

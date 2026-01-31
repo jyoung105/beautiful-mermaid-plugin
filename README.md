@@ -107,21 +107,26 @@ All commands are namespaced as `beautiful-mermaid-plugin:<command>`.
 
 | Command | Description |
 |--------|--------------|
-| `/beautiful-mermaid-plugin:draw-diagram` | Analyze codebase or files and draw a Mermaid diagram. Default output is **SVG**; add `--ascii` in arguments for terminal/ASCII output. |
+| `/beautiful-mermaid-plugin:draw-diagram-overview` | Analyze the **full codebase** and draw a Mermaid diagram. Default output is **SVG**; add `--ascii` for terminal/ASCII output. |
+| `/beautiful-mermaid-plugin:draw-diagram-part` | Analyze **specific files or directories** and draw a Mermaid diagram. Default output is **SVG**; add `--ascii` for terminal/ASCII output. |
 | `/beautiful-mermaid-plugin:install-mermaid` | Check and install beautiful-mermaid and a TypeScript runner (e.g. tsx) in the project. |
 | `/beautiful-mermaid-plugin:format-filename` | Generate a descriptive filename for diagram output (e.g. `auth-flow-sequence.svg` or `diagram-flowchart.txt`). |
 
 ### Examples
 
-- Draw a diagram (SVG by default):  
-  `/beautiful-mermaid-plugin:draw-diagram`
-- Draw and output ASCII:  
-  `/beautiful-mermaid-plugin:draw-diagram --ascii`
-- Draw from specific path/diagram type:  
-  `/beautiful-mermaid-plugin:draw-diagram src/auth flowchart`
-- Install prerequisites:  
+- Draw a full codebase overview diagram (SVG by default):
+  `/beautiful-mermaid-plugin:draw-diagram-overview`
+- Draw a full codebase overview in ASCII:
+  `/beautiful-mermaid-plugin:draw-diagram-overview --ascii`
+- Draw a full codebase class diagram:
+  `/beautiful-mermaid-plugin:draw-diagram-overview class`
+- Draw a diagram of specific files:
+  `/beautiful-mermaid-plugin:draw-diagram-part src/auth flowchart`
+- Draw a specific directory as ASCII:
+  `/beautiful-mermaid-plugin:draw-diagram-part src/api sequence --ascii`
+- Install prerequisites:
   `/beautiful-mermaid-plugin:install-mermaid`
-- Get a suggested filename:  
+- Get a suggested filename:
   `/beautiful-mermaid-plugin:format-filename api sequence svg`
 
 ---
@@ -151,7 +156,7 @@ The plugin includes the **draw-beautiful-mermaid** skill. Claude Code can use it
 - Valid Mermaid syntax (newlines, spaces around arrows)
 - Programmatic SVG/ASCII usage
 
-The skill is referenced by the diagram-renderer agent and by the draw-diagram command.
+The skill is referenced by the diagram-renderer agent and by the draw-diagram-overview and draw-diagram-part commands.
 
 ---
 
@@ -159,7 +164,7 @@ The skill is referenced by the diagram-renderer agent and by the draw-diagram co
 
 - **Default**: Diagrams are rendered as **SVG** and saved to a file (e.g. `.svg`).
 - **ASCII**: For terminals or plain-text, use **ASCII**:
-  - In **draw-diagram**: include `--ascii` in the arguments, or ask for “ASCII” or “terminal” output.
+  - In **draw-diagram-overview** or **draw-diagram-part**: include `--ascii` in the arguments, or ask for "ASCII" or "terminal" output.
   - In the **render script**: pass `--ascii` and use a `.txt` output path or stdout.
 
 ---
@@ -192,7 +197,8 @@ beautiful-mermaid-plugin/
 │   └── marketplace.json
 ├── LICENSE
 ├── commands/
-│   ├── draw-diagram.md
+│   ├── draw-diagram-overview.md
+│   ├── draw-diagram-part.md
 │   ├── install-mermaid.md
 │   └── format-filename.md
 ├── agents/
