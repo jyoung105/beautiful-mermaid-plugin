@@ -1,4 +1,4 @@
-# mermaid-plugin
+# Beautiful-mermaid-plugin
 
 A [Claude Code](https://code.claude.com/) plugin that renders beautiful Mermaid diagrams (SVG or ASCII) using the [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid) library. It provides slash commands, agents, and a skill for analyzing code, generating diagrams, and customizing themes.
 
